@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo | My Journey</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #101010;
+            color: white;
+            text-align: center;
+        }
+
+        header {
+            padding: 80px 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+        }
+
+        p {
+            color: #cccccc;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        button {
+            background: white;
+            color: black;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        section {
+            padding: 35px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Hey, I'm Neo.</h1>
+        <p>I'm learning to code, build things, and understand business.</p>
+        <button onclick="showMessage()">View My Journey</button>
+        <p id="message"></p>
+    </header>
+
+    <section>
+        <h2>What I'm Learning</h2>
+        <p>Python · Web Development · Business · Content Creation</p>
+    </section>
+
+    <section>
+        <h2>My Goal</h2>
+        <p>Learn new skills, build real projects, and share my progress.</p>
+    </section>
+
+    <script>
+        function showMessage() {
+            document.getElementById("message").textContent =
+                "Every expert was once a beginner. This is my starting point!";
+        }
+    </script>
+</body>
+</html>

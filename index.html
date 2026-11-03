@@ -2,72 +2,798 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo | My Journey</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeoOS | Creator Dashboard</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #101010;
-            color: white;
-            text-align: center;
-        }
+<style>
+:root {
+    --bg: #0c0d12;
+    --panel: #14161f;
+    --panel2: #1b1e29;
+    --text: #f4f4fa;
+    --muted: #9297aa;
+    --line: #292c3a;
+    --accent: #a78bfa;
+    --green: #6ee7b7;
+}
+body.light {
+    --bg: #f4f5fa;
+    --panel: #ffffff;
+    --panel2: #f0eff8;
+    --text: #202131;
+    --muted: #686b7c;
+    --line: #dedfea;
+    --accent: #7654dc;
+    --green: #07865b;
+}
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background .2s, color .2s;
+}
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+    width: 235px;
+    background: var(--panel);
+    border-right: 1px solid var(--line);
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 0 10px 30px;
+    font-size: 20px;
+    font-weight: 800;
+}
+.brand-icon {
+    background: var(--accent);
+    color: #171321;
+    border-radius: 11px;
+    padding: 9px 10px;
+}
+.label {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    padding: 10px 12px;
+}
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.nav button {
+    border: 0;
+    text-align: left;
+    background: transparent;
+    color: var(--muted);
+    padding: 12px;
+    border-radius: 9px;
+    font-size: 14px;
+}
+.nav button:hover, .nav button.active {
+    background: var(--panel2);
+    color: var(--text);
+}
+.nav button.active { box-shadow: inset 3px 0 var(--accent); }
+.side-bottom {
+    margin-top: auto;
+    border-top: 1px solid var(--line);
+    padding-top: 15px;
+}
+.main { min-width: 0; flex: 1; }
+.topbar {
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 34px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+    gap: 15px;
+}
+.top-title { font-size: 14px; color: var(--muted); }
+.avatar {
+    width: 37px;
+    height: 37px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #171321;
+    font-weight: bold;
+}
+.top-right { display: flex; align-items: center; gap: 12px; }
+.content { padding: 32px; max-width: 1450px; margin: auto; }
+h1 { font-size: clamp(25px, 3vw, 34px); margin: 0 0 9px; }
+h2 { font-size: 19px; margin: 0 0 18px; }
+h3 { font-size: 15px; margin: 0 0 9px; }
+p { color: var(--muted); line-height: 1.65; font-size: 14px; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+.hero {
+    padding: 30px;
+    border: 1px solid #4c3c76;
+    border-radius: 17px;
+    background: linear-gradient(115deg, #292142, #191a2a 70%, #171924);
+    margin: 25px 0;
+}
+.hero h2 { font-size: 25px; margin: 13px 0 7px; color: #fff; }
+.hero p { color: #d0c9e6; max-width: 580px; }
+.eyebrow { color: #c4b5fd; font-size: 12px; letter-spacing: 1px; }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin: 22px 0 30px;
+}
+.card {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: 21px;
+    border-radius: 14px;
+    min-width: 0;
+}
+.stat-top { display: flex; justify-content: space-between; gap: 8px; }
+.stat-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    background: var(--panel2);
+    border-radius: 10px;
+}
+.stat-value { font-size: 29px; font-weight: 750; margin: 17px 0 4px; }
+.two-col {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+    margin-top: 22px;
+}
+.list-item {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--line);
+}
+.list-item:last-child { border-bottom: 0; }
+.list-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--panel2);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+.list-copy { min-width: 0; flex: 1; }
+.list-copy p { margin: 4px 0 0; }
+.btn {
+    border: 0;
+    border-radius: 9px;
+    padding: 11px 15px;
+    background: var(--accent);
+    color: #181324;
+    font-weight: 700;
+    font-size: 13px;
+}
+.btn:hover { opacity: .88; }
+.btn.secondary {
+    background: var(--panel2);
+    color: var(--text);
+    border: 1px solid var(--line);
+}
+.btn.danger { background: #4a222b; color: #ffc2ca; }
+.pill {
+    display: inline-block;
+    background: var(--panel2);
+    color: var(--muted);
+    padding: 5px 9px;
+    border-radius: 30px;
+    font-size: 11px;
+}
+.pill.done { color: var(--green); }
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 17px;
+    margin-top: 22px;
+}
+.project-card { display: flex; flex-direction: column; gap: 10px; }
+.project-card p { flex: 1; }
+.field {
+    width: 100%;
+    padding: 12px 13px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    color: var(--text);
+    outline: none;
+    margin: 7px 0 15px;
+}
+.field:focus { border-color: var(--accent); }
+textarea.field { resize: vertical; min-height: 230px; }
+.form-label { font-size: 13px; color: var(--muted); }
+.progress {
+    height: 7px;
+    background: var(--panel2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 13px 0;
+}
+.progress div {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 10px;
+}
+.checkline {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+}
+.checkline input { accent-color: var(--accent); width: 17px; height: 17px; }
+.checkline input:checked + span {
+    text-decoration: line-through;
+    color: var(--muted);
+}
+.page { display: none; }
+.page.active { display: block; }
+.mobile-menu { display: none; }
+.toast {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    padding: 14px 19px;
+    background: var(--panel2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: none;
+    z-index: 30;
+}
+.empty { padding: 25px 0; color: var(--muted); font-size: 14px; }
 
-        header {
-            padding: 80px 20px;
-        }
-
-        h1 {
-            font-size: 48px;
-        }
-
-        p {
-            color: #cccccc;
-            font-size: 18px;
-            line-height: 1.6;
-        }
-
-        button {
-            background: white;
-            color: black;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        section {
-            padding: 35px 20px;
-        }
-    </style>
+@media (max-width: 1050px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+    .sidebar {
+        display: none;
+        position: fixed;
+        z-index: 20;
+        top: 0;
+        bottom: 0;
+        left: 0;
+    }
+    .sidebar.open { display: flex; }
+    .mobile-menu { display: inline-block; }
+    .topbar { padding: 0 16px; height: 65px; }
+    .content { padding: 22px 16px; }
+    .grid { gap: 10px; }
+    .card { padding: 15px; }
+    .two-col, .project-grid { grid-template-columns: 1fr; }
+    .hero { padding: 23px; }
+    .top-title { display: none; }
+}
+</style>
 </head>
 
 <body>
-    <header>
-        <h1>Hey, I'm Neo.</h1>
-        <p>I'm learning to code, build things, and understand business.</p>
-        <button onclick="showMessage()">View My Journey</button>
-        <p id="message"></p>
-    </header>
+<div class="layout">
 
-    <section>
-        <h2>What I'm Learning</h2>
-        <p>Python · Web Development · Business · Content Creation</p>
-    </section>
+<aside class="sidebar" id="sidebar">
+    <div class="brand">
+        <span class="brand-icon">N</span>
+        <span>NeoOS<span style="color:var(--accent)">.</span></span>
+    </div>
 
-    <section>
-        <h2>My Goal</h2>
-        <p>Learn new skills, build real projects, and share my progress.</p>
-    </section>
+    <div class="label">WORKSPACE</div>
+    <nav class="nav">
+        <button class="active" data-page="overview">▦ &nbsp; Overview</button>
+        <button data-page="projects">▣ &nbsp; My Projects</button>
+        <button data-page="learning">⌘ &nbsp; Learning Tracker</button>
+        <button data-page="tasks">☑ &nbsp; Tasks</button>
+        <button data-page="notes">▤ &nbsp; My Notes</button>
+    </nav>
 
-    <script>
-        function showMessage() {
-            document.getElementById("message").textContent =
-                "Every expert was once a beginner. This is my starting point!";
-        }
-    </script>
+    <div class="label" style="margin-top:20px">PREFERENCES</div>
+    <nav class="nav">
+        <button data-page="settings">⚙ &nbsp; Settings</button>
+    </nav>
+
+    <div class="side-bottom">
+        <div class="list-item">
+            <div class="avatar" id="sideAvatar">N</div>
+            <div class="list-copy">
+                <strong id="sideName">Neo</strong>
+                <p class="small">Creator workspace</p>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main class="main">
+    <div class="topbar">
+        <div class="top-right">
+            <button class="btn secondary mobile-menu" id="menuBtn">☰</button>
+            <div>
+                <div class="top-title">YOUR WORKSPACE</div>
+                <strong id="pageTitle">Overview</strong>
+            </div>
+        </div>
+        <div class="top-right">
+            <button class="btn secondary" id="themeBtn" title="Switch theme">☼</button>
+            <div class="avatar" id="topAvatar">N</div>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- OVERVIEW PAGE -->
+        <section class="page active" id="overview">
+            <div class="row">
+                <div>
+                    <h1 id="greeting">Welcome back, Neo 👋</h1>
+                    <p>Your ideas, learning, and projects — all in one place.</p>
+                </div>
+                <button class="btn" onclick="go('projects');setTimeout(addProject,50)">
+                    + New project
+                </button>
+            </div>
+
+            <div class="hero">
+                <span class="eyebrow">YOUR PERSONAL WORKSPACE</span>
+                <h2>Think it. Build it. Improve it.</h2>
+                <p>
+                    You're building skills for the future.
+                    Track your progress, capture ideas, and turn
+                    what you learn into real projects.
+                </p>
+                <button class="btn" onclick="go('learning')">Continue learning →</button>
+            </div>
+
+            <div class="row">
+                <h2>Workspace overview</h2>
+                <span class="pill">YOUR STATS</span>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="stat-top">
+                        <span class="muted small">Total projects</span>
+                        <span class="stat-icon">▣</span>
+                    </div>
+                    <div class="stat-value" id="projectCount">0</div>
+                    <span class="muted small">Ideas and things you're building</span>
+                </div>
+                <div class="card">
+                    <div class="stat-top">
+                        <span class="muted small">Tasks completed</span>
+                        <span class="stat-icon">✓</span>
+                    </div>
+                    <div class="stat-value" id="taskCount">0</div>
+                    <span class="muted small">Tasks you've checked off</span>
+                </div>
+                <div class="card">
+                    <div class="stat-top">
+                        <span class="muted small">Learning areas</span>
+                        <span class="stat-icon">⌘</span>
+                    </div>
+                    <div class="stat-value" id="learnCount">4</div>
+                    <span class="muted small">Skills on your learning list</span>
+                </div>
+                <div class="card">
+                    <div class="stat-top">
+                        <span class="muted small">Saved notes</span>
+                        <span class="stat-icon">▤</span>
+                    </div>
+                    <div class="stat-value" id="noteCount">0</div>
+                    <span class="muted small">Words in your notes</span>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div class="card">
+                    <div class="row">
+                        <h2>Recent projects</h2>
+                        <button class="btn secondary" onclick="go('projects')">View all</button>
+                    </div>
+                    <div id="recentProjects"></div>
+                </div>
+                <div class="card">
+                    <h2>Today's focus</h2>
+                    <p>Small steps add up. Choose a task and get started.</p>
+                    <div id="todayTasks"></div>
+                    <button class="btn secondary" style="margin-top:15px"
+                        onclick="go('tasks')">Manage tasks →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS PAGE -->
+        <section class="page" id="projects">
+            <div class="row">
+                <div>
+                    <h1>My Projects</h1>
+                    <p>Keep track of what you're creating.</p>
+                </div>
+                <button class="btn" onclick="addProject()">+ Add project</button>
+            </div>
+            <div class="project-grid" id="projectGrid"></div>
+        </section>
+
+        <!-- LEARNING PAGE -->
+        <section class="page" id="learning">
+            <h1>Learning Tracker</h1>
+            <p>Keep exploring. Mark a learning area when you've made progress.</p>
+
+            <div class="project-grid" id="learningGrid">
+                <div class="card">
+                    <div class="icon">🐍</div>
+                    <h3>Python</h3>
+                    <p>Functions, loops, lists, dictionaries, and small programs.</p>
+                    <div class="progress"><div style="width:35%"></div></div>
+                    <span class="pill">In progress</span>
+                </div>
+                <div class="card">
+                    <div class="icon">🌐</div>
+                    <h3>Web development</h3>
+                    <p>HTML, CSS, JavaScript, websites, and publishing.</p>
+                    <div class="progress"><div style="width:25%"></div></div>
+                    <span class="pill">In progress</span>
+                </div>
+                <div class="card">
+                    <div class="icon">💼</div>
+                    <h3>Business</h3>
+                    <p>Understanding customers, value, sales, and business models.</p>
+                    <div class="progress"><div style="width:10%"></div></div>
+                    <span class="pill">Exploring</span>
+                </div>
+                <div class="card">
+                    <div class="icon">🎬</div>
+                    <h3>Content creation</h3>
+                    <p>Scripts, storytelling, editing, and sharing projects.</p>
+                    <div class="progress"><div style="width:20%"></div></div>
+                    <span class="pill">In progress</span>
+                </div>
+            </div>
+            <p class="small">Progress bars are starter estimates. You can customize them in the code later.</p>
+        </section>
+
+        <!-- TASKS PAGE -->
+        <section class="page" id="tasks">
+            <h1>My Tasks</h1>
+            <p>Write down what you want to accomplish next.</p>
+            <div class="card" style="max-width:750px">
+                <form id="taskForm">
+                    <label class="form-label" for="taskInput">New task</label>
+                    <div class="row" style="margin-top:6px">
+                        <input class="field" id="taskInput" placeholder="e.g. Learn CSS grid" required style="margin:0">
+                        <button class="btn" type="submit">Add</button>
+                    </div>
+                </form>
+                <div id="taskList" style="margin-top:18px"></div>
+            </div>
+        </section>
+
+        <!-- NOTES PAGE -->
+        <section class="page" id="notes">
+            <h1>My Notes</h1>
+            <p>Save ideas, lessons, reminders, and things you want to build.</p>
+            <div class="card" style="max-width:850px">
+                <label class="form-label" for="noteTitle">Note title</label>
+                <input class="field" id="noteTitle" placeholder="e.g. My next website idea">
+                <label class="form-label" for="noteText">Your notes</label>
+                <textarea class="field" id="noteText" placeholder="Start writing here..."></textarea>
+                <div class="row">
+                    <span class="muted small" id="saveStatus">Saved in this browser</span>
+                    <button class="btn" id="saveNote">Save note</button>
+                </div>
+                <h3 style="margin-top:28px">Saved notes</h3>
+                <div id="savedNotes"></div>
+            </div>
+        </section>
+
+        <!-- SETTINGS PAGE -->
+        <section class="page" id="settings">
+            <h1>Settings</h1>
+            <p>Personalize your NeoOS workspace.</p>
+            <div class="card" style="max-width:650px">
+                <label class="form-label" for="displayName">Display name</label>
+                <input class="field" id="displayName" placeholder="Your name">
+                <button class="btn" id="saveSettings">Save settings</button>
+                <hr style="border:0;border-top:1px solid var(--line);margin:25px 0">
+                <h3>Appearance</h3>
+                <p>Switch between dark and light themes using the button at the top.</p>
+                <button class="btn secondary" id="settingsTheme">Toggle theme</button>
+                <hr style="border:0;border-top:1px solid var(--line);margin:25px 0">
+                <h3>Workspace data</h3>
+                <p>Your projects, tasks, and notes are stored in this browser on this device.</p>
+                <button class="btn danger" id="resetBtn">Reset all workspace data</button>
+                <p class="small">Resetting permanently clears saved workspace data in this browser.</p>
+            </div>
+        </section>
+
+        <footer style="margin-top:45px;border-top:1px solid var(--line);padding-top:20px">
+            <p class="small">NeoOS © 2026 · Built to learn, create, and grow.</p>
+        </footer>
+    </div>
+</main>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function read(key, fallback) {
+    try {
+        const value = localStorage.getItem("neoos_" + key);
+        return value === null ? fallback : JSON.parse(value);
+    } catch (e) {
+        return fallback;
+    }
+}
+function write(key, value) {
+    try {
+        localStorage.setItem("neoos_" + key, JSON.stringify(value));
+    } catch (e) {
+        toast("Browser storage is unavailable.");
+    }
+}
+
+let projects = read("projects", [
+    {id: 1, name: "My First Website", category: "Web development",
+     status: "In progress", desc: "My first portfolio built with HTML, CSS, and JavaScript."},
+    {id: 2, name: "Python Practice", category: "Programming",
+     status: "Learning", desc: "Small coding exercises and programs."},
+    {id: 3, name: "Creator Brand", category: "Content",
+     status: "Planning", desc: "Ideas and experiments for my content journey."}
+]);
+let tasks = read("tasks", [
+    {id: 1, text: "Explore my website dashboard", done: false},
+    {id: 2, text: "Practise one coding concept", done: false},
+    {id: 3, text: "Write down a new idea", done: false}
+]);
+let notes = read("notes", []);
+let prefs = read("prefs", {name: "Neo", theme: "dark"});
+let nextId = Math.max(0, ...projects.map(x => x.id), ...tasks.map(x => x.id), ...notes.map(x => x.id)) + 1;
+
+function toast(message) {
+    const box = $("toast");
+    box.textContent = message;
+    box.style.display = "block";
+    clearTimeout(window.toastTimer);
+    window.toastTimer = setTimeout(() => box.style.display = "none", 2400);
+}
+
+function go(page) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    $(page).classList.add("active");
+    document.querySelectorAll("[data-page]").forEach(b =>
+        b.classList.toggle("active", b.dataset.page === page)
+    );
+    const names = {
+        overview: "Overview", projects: "My Projects",
+        learning: "Learning Tracker", tasks: "My Tasks",
+        notes: "My Notes", settings: "Settings"
+    };
+    $("pageTitle").textContent = names[page] || "Workspace";
+    $("sidebar").classList.remove("open");
+    render();
+    window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+document.querySelectorAll("[data-page]").forEach(button => {
+    button.addEventListener("click", () => go(button.dataset.page));
+});
+
+function saveAll() {
+    write("projects", projects);
+    write("tasks", tasks);
+    write("notes", notes);
+    write("prefs", prefs);
+}
+
+function renderProjects() {
+    $("projectGrid").innerHTML = projects.length ? projects.map(p => `
+        <article class="card project-card">
+            <span class="pill">${esc(p.category)}</span>
+            <h3>${esc(p.name)}</h3>
+            <p>${esc(p.desc)}</p>
+            <div class="row">
+                <span class="pill">${esc(p.status)}</span>
+                <button class="btn secondary" onclick="removeProject(${p.id})">Delete</button>
+            </div>
+        </article>
+    `).join("") : '<p class="empty">No projects yet. Add your first one!</p>';
+
+    $("recentProjects").innerHTML = projects.slice(-3).reverse().map(p => `
+        <div class="list-item">
+            <div class="list-icon">▣</div>
+            <div class="list-copy"><strong>${esc(p.name)}</strong>
+            <p>${esc(p.category)} · ${esc(p.status)}</p></div>
+        </div>
+    `).join("") || '<p class="empty">Your projects will appear here.</p>';
+
+    $("projectCount").textContent = projects.length;
+}
+
+function addProject() {
+    const name = prompt("What's your project called?");
+    if (!name || !name.trim()) return;
+    const category = prompt("Category? (e.g. Coding, Business, Content)", "Coding");
+    const desc = prompt("What is this project about?", "A new project I'm building.");
+    projects.push({
+        id: nextId++,
+        name: name.trim().slice(0, 100),
+        category: (category || "Other").trim().slice(0, 60),
+        desc: (desc || "No description yet.").trim().slice(0, 300),
+        status: "In progress"
+    });
+    saveAll();
+    render();
+    toast("Project added!");
+}
+function removeProject(id) {
+    if (!confirm("Delete this project?")) return;
+    projects = projects.filter(p => p.id !== id);
+    saveAll();
+    render();
+    toast("Project deleted.");
+}
+
+$("taskForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const text = $("taskInput").value.trim();
+    if (!text) return;
+    tasks.push({id: nextId++, text: text.slice(0, 200), done: false});
+    $("taskInput").value = "";
+    saveAll();
+    render();
+    toast("Task added!");
+});
+
+function toggleTask(id) {
+    tasks = tasks.map(t => t.id === id ? {...t, done: !t.done} : t);
+    saveAll();
+    render();
+}
+function deleteTask(id) {
+    tasks = tasks.filter(t => t.id !== id);
+    saveAll();
+    render();
+}
+function taskHTML(t) {
+    return `<div class="row" style="gap:8px">
+        <label class="checkline" style="flex:1">
+            <input type="checkbox" ${t.done ? "checked" : ""}
+                onchange="toggleTask(${t.id})">
+            <span>${esc(t.text)}</span>
+        </label>
+        <button class="btn secondary" onclick="deleteTask(${t.id})" aria-label="Delete task">×</button>
+    </div>`;
+}
+
+function renderTasks() {
+    $("taskList").innerHTML = tasks.map(taskHTML).join("") ||
+        '<p class="empty">No tasks yet. Add one above.</p>';
+    $("todayTasks").innerHTML = tasks.slice(0, 4).map(taskHTML).join("") ||
+        '<p class="empty">You're all clear. Add a task when you're ready.</p>';
+    $("taskCount").textContent = tasks.filter(t => t.done).length;
+}
+
+$("saveNote").addEventListener("click", () => {
+    const title = $("noteTitle").value.trim();
+    const text = $("noteText").value.trim();
+    if (!title && !text) {
+        toast("Write something before saving.");
+        return;
+    }
+    notes.push({
+        id: nextId++,
+        title: (title || "Untitled note").slice(0, 100),
+        text: text.slice(0, 10000),
+        date: new Date().toLocaleDateString()
+    });
+    $("noteTitle").value = "";
+    $("noteText").value = "";
+    saveAll();
+    render();
+    toast("Note saved!");
+});
+
+function deleteNote(id) {
+    notes = notes.filter(n => n.id !== id);
+    saveAll();
+    render();
+    toast("Note deleted.");
+}
+function renderNotes() {
+    $("savedNotes").innerHTML = notes.slice().reverse().map(n => `
+        <div class="list-item">
+            <div class="list-icon">▤</div>
+            <div class="list-copy">
+                <strong>${esc(n.title)}</strong>
+                <p>${esc(n.date)} · ${esc(n.text.slice(0, 100))}</p>
+            </div>
+            <button class="btn secondary" onclick="deleteNote(${n.id})">Delete</button>
+        </div>
+    `).join("") || '<p class="empty">Your saved notes will appear here.</p>';
+
+    $("noteCount").textContent = notes.reduce((sum, n) =>
+        sum + n.text.split(/\s+/).filter(Boolean).length, 0);
+}
+
+function esc(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#39;"
+    })[char]);
+}
+
+function render() {
+    renderProjects();
+    renderTasks();
+    renderNotes();
+    $("sideName").textContent = prefs.name;
+    $("greeting").textContent = "Welcome back, " + prefs.name + " 👋";
+    $("sideAvatar").textContent = (prefs.name[0] || "N").toUpperCase();
+    $("topAvatar").textContent = (prefs.name[0] || "N").toUpperCase();
+    $("displayName").value = prefs.name;
+    $("learnCount").textContent = 4;
+}
+
+function setTheme() {
+    document.body.classList.toggle("light", prefs.theme === "light");
+    $("themeBtn").textContent = prefs.theme === "light" ? "☾" : "☼";
+}
+function toggleTheme() {
+    prefs.theme = prefs.theme === "light" ? "dark" : "light";
+    write("prefs", prefs);
+    setTheme();
+    toast("Theme updated.");
+}
+$("themeBtn").addEventListener("click", toggleTheme);
+$("settingsTheme").addEventListener("click", toggleTheme);
+
+$("saveSettings").addEventListener("click", () => {
+    const name = $("displayName").value.trim();
+    prefs.name = name.slice(0, 40) || "Neo";
+    saveAll();
+    render();
+    toast("Settings saved!");
+});
+
+$("resetBtn").addEventListener("click", () => {
+    if (!confirm("This will permanently clear your saved projects, tasks, notes, and preferences in this browser. Continue?")) return;
+    ["projects", "tasks", "notes", "prefs"].forEach(key =>
+        localStorage.removeItem("neoos_" + key)
+    );
+    location.reload();
+});
+
+$("menuBtn").addEventListener("click", () => {
+    $("sidebar").classList.toggle("open");
+});
+
+setTheme();
+render();
+</script>
 </body>
 </html>
